@@ -1,0 +1,78 @@
+//infix to postfix 
+
+package com.company;
+import java.util.*;
+class MyStack {
+
+    //delete element from stack
+    public int precedence (String op){
+        if(op.equals("^")){
+            return 3;
+        }
+        else if(op.equals("/") || op.equals("*")){
+            return 2;
+        }
+        else if(op.equals("+") || op.equals("-")){
+            return 1;
+        }
+        else if(op.equals("(")){
+            return -1;
+        }
+        else
+            return 0;
+    }
+}
+public class Main {
+
+    public static void main(String[] args) {
+	// write your code here
+        Scanner sc =new Scanner(System.in);
+        System.out.print("enter infix expression:");
+        String infix = sc.next();
+        String Postfix = new String();
+        Stack<String> P = new Stack<String>();
+        String[] operators = {"+","*","/","-","^"};
+        MyStack stack1 = new MyStack();
+        List<String> list = Arrays.asList(operators);
+        int i;
+        P.push("(");
+        //System.out.println(P);
+        infix = infix + ")";
+        for(i=0;i<infix.length();i++){
+            if(String.valueOf(infix.charAt(i)).equals("(")){
+                P.push("(");
+            }
+            else if(String.valueOf(infix.charAt(i)).equals(")")){
+                String temp = new String();
+                while(!P.peek().equals("(")) {
+                    temp = P.pop();
+                    Postfix = Postfix + temp;
+                    //System.out.println(Postfix);
+                }
+                P.pop();
+                }
+            else if(list.contains(String.valueOf(infix.charAt(i)))){
+                String peek = P.peek();
+                String temp = new String();
+                int current = stack1.precedence(String.valueOf(infix.charAt(i)));
+                //System.out.println(current);
+                //System.out.println(stack1.precedence(peek));
+                while(stack1.precedence(String.valueOf(infix.charAt(i))) <= stack1.precedence(P.peek())){
+                    temp = P.pop();
+                    Postfix = Postfix + temp;
+                    System.out.println(Postfix);
+                }
+
+                P.push(String.valueOf(infix.charAt(i)));
+            }
+            else {
+                //System.out.println("A");
+                Postfix = Postfix + String.valueOf(infix.charAt(i));
+            }
+            System.out.println(P);
+        }
+        System.out.println(Postfix);
+
+    }
+}
+

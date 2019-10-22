@@ -1,0 +1,92 @@
+// circular queue
+
+package com.company;
+import java.util.*;
+class MyQueue {
+    int[] arr ;
+    int front,rear;
+    // constructor
+    public MyQueue(int capacity){
+        this.arr = new int[capacity];
+        this.front = -1;
+        this.rear = -1;
+    }
+    public void enqueue (int item){
+        if((this.rear+1)%this.arr.length == this.front){
+            System.out.println("overflow");
+            return;
+        }
+        if(this.front==-1 && this.rear ==-1)
+            this.front++;
+
+        this.rear = (this.rear+1)%this.arr.length;
+        this.arr[this.rear] = item;
+    }
+    //delete element from stack
+    public int dequeue (){
+        if(this.front==-1){
+            System.out.println("underflow");
+            return -1;
+        }
+        if(this.front == this.rear){
+            int item = this.arr[this.front];
+            this.front=this.rear=-1;
+            return item;
+        }
+        int item = this.arr[this.front];
+        this.front= (this.front+1)%this.arr.length;
+        return item;
+    }
+   //print Queue elements
+    public void print(){
+
+
+        if(this.rear < this.front){
+            for(int i=this.front;i<this.arr.length;i++) {
+                System.out.print(arr[i]+"\t");
+            }
+            for(int i=this.rear;i<this.front;i++) {
+                System.out.print(arr[i]+"\t");
+            }
+            return;
+        }
+        for(int i=this.front;i<=this.rear;i++) {
+            System.out.print(arr[i]+"\t");
+        }
+    }
+
+}
+public class Main {
+
+    public static void main(String[] args) {
+	// write your code here
+        Scanner sc =new Scanner(System.in);
+        System.out.print("enter capacity of queue:");
+        int capacity = sc.nextInt();
+        int cmd=0;
+        MyQueue queue1 = new MyQueue(capacity);
+        while(cmd!=4){
+            System.out.println("1.Insert");
+            System.out.println("2.Delete");
+            System.out.println("3.Display");
+            System.out.println("4.Exit");
+            cmd = sc.nextInt();
+            if(cmd==1){
+                int element = sc.nextInt();
+                queue1.enqueue(element);
+            }
+            else if(cmd==2){
+                int element = queue1.dequeue();
+                System.out.println(element);
+            }
+            else if(cmd==3){
+                queue1.print();
+            }
+            else {
+                System.out.println("exited sucessfully");
+            }
+
+        }
+    }
+}
+

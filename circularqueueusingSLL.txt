@@ -1,0 +1,395 @@
+// Circular Queue using SLL
+
+package com.company;
+import java.util.*;
+
+class MyDoubleLinkedList {
+
+    class Node{
+        int data;
+        Node next,prev;
+    };
+    Node header,tail;
+    public void headerNode(){
+        header=new Node();
+        header.data = 0;
+        header.prev = null;
+        header.next = null;
+    }
+    public void tailNode(){
+        tail=new Node();
+        tail.data = 0;
+        tail.prev = null;
+        tail.next = header.next;
+    }
+    public MyDoubleLinkedList(){
+        headerNode();
+        tailNode();
+    }
+
+    public void insertFirst(int element){
+        Node temp=new Node();
+        temp.data = element;
+        temp.next=header.next;
+        temp.prev = tail;
+        tail.next = temp;
+        header.next = temp;
+        header.data++;
+        if(header.data == 1){
+
+            temp.prev = temp;
+            tail=temp;
+            //tail.next = header.next;
+        }
+       // System.out.println(tail.data);
+
+    }
+    public void insert(int element){
+        Node temp = header.next;
+        if(temp==null){
+            insertFirst(element);
+            return;
+        }
+        while(temp.next!=tail.next){
+            temp = temp.next;
+        }
+        Node q = new Node();
+        q.data = element;
+        q.next = header;
+        temp.next=q;
+        q.prev =temp;
+        tail=q;
+        header.data++;
+
+    }
+    public void insertAfter(int a,int b){
+        Node temp = header.next;
+        if(temp==null){
+            System.out.println("not possible, empty ll");
+            return;
+        }
+        while(temp.next!=tail.next && temp.data!=b){
+            temp = temp.next;
+        }
+        if(temp.next == tail.next && temp.data !=b){
+            System.out.println("node not present");
+            return;
+        }
+        Node q = new Node();
+        q.next = temp.next;
+        q.data = a;
+        q.prev=temp;
+        temp.next.prev = q;
+        temp.next = q;
+        header.data++;
+
+    }
+    public void insertBefore(int a,int b){
+        Node temp = header.next;
+        if(temp==null){
+            System.out.println("not possible, empty ll");
+            return;
+        }
+        if(temp.data == b){
+            insertFirst(a);
+            return;
+        }
+        while(temp.next!=tail.next && temp.data!=b){
+            temp = temp.next;
+        }
+        if(temp.next == tail.next){
+            System.out.println("node not present");
+            return;
+        }
+        Node q = new Node();
+        q.next = temp;
+        q.prev = temp.prev;
+        q.data = a;
+        temp.prev.next = q;
+        temp.prev = q;
+        header.data++;
+
+    }
+//    public void insertSorted(int element){
+//        Node temp = head;
+//        if(temp==null){
+//            insertFirst(element);
+//            return;
+//        }
+//        while(temp.next!=null && temp.data<element){
+//            temp = temp.next;
+//        }
+//        if(temp.data <= element && temp.next == null){
+//            insert(element);
+//            return;
+//        }
+//        int ib = temp.data;
+//        insertBefore(element,ib);
+//        display();
+//    }
+    public void deleteFirst(){
+        if(header.next == null){
+            System.out.println("no elements");
+            return;
+        }
+        header.next = header.next.next;
+        header.data--;
+        tail.next = header.next;
+        display();
+    }
+
+
+    public void deleteLast(){
+       if(header.data >=1) {
+           tail.prev.next = tail.next;
+           tail = tail.prev;
+           header.data--;
+       }
+       if(header.data == 0){
+           System.out.println("no elements");
+           return;
+       }
+        display();
+    }
+    public void deleteElement(int element){
+        Node temp = header.next;
+        if(temp==null){
+            System.out.println("no elements");
+            return;
+        }
+        while(temp.next!=tail.next && temp.data!=element){
+            temp = temp.next;
+        }
+        if(temp.next == tail.next && temp.data!=element){
+            System.out.println("element not found");
+            return;
+        }
+        if(temp.next == tail.next && temp.data==element){
+            deleteLast();
+            return;
+        }
+        temp.prev.next = temp.next;
+        temp.next.prev = temp.prev;
+        header.data--;
+        display();
+    }
+    public int deleteAfter(int element){
+        int ele=-1;
+        Node temp = header.next;
+        if(temp==null){
+            System.out.println("no elements");
+            return -1;
+        }
+        while(temp.next!=tail.next && temp.data!=element){
+            temp = temp.next;
+        }
+        if(temp.next == tail.next && temp.data!=element){
+            System.out.println("element not found");
+            return -1;
+        }
+        if(temp.next == tail.next && temp.data==element){
+           ele = header.next.data;
+            deleteFirst();
+           return ele;
+        }
+
+        if(temp.next == tail){
+            ele = tail.data;
+            deleteLast();
+            return ele;
+        }
+        ele = temp.next.data;
+
+        temp.next = temp.next.next;
+        temp.next.prev = temp;
+        header.data--;
+
+
+
+        return ele;
+    }
+    public int deleteBefore(int element){
+        int ele=-1,count=0;
+        Node temp = header.next;
+        if(temp==null){
+            System.out.println("no elements");
+            return -1;
+        }
+        if(temp.data == element){
+            ele = tail.data;
+            deleteLast();
+            return ele;
+        }
+        while(temp.next!=tail.next && temp.data!=element){
+            temp = temp.next;
+            count++;
+        }
+        if(temp.next==tail.next && temp.data != element){
+            System.out.println("no elements to delete");
+            return -1;
+        }
+        if(temp.next == tail.next &&  temp.data == element) {
+            System.out.println("abc");
+            ele = temp.prev.data;
+
+            temp.prev = temp.prev.prev;
+            temp.prev.next = temp;
+            tail = temp;
+
+            return ele;
+        }
+        if(temp.prev == header.next){
+            //System.out.println("def");
+
+            ele = temp.prev.data;
+             deleteFirst();
+             return ele;
+        }
+        ele = temp.prev.data;
+
+        temp.prev = temp.prev.prev;
+        temp.prev.next = temp;
+
+        return ele;
+    }
+    public int searchElement(int element){
+        Node temp = header.next;
+        int index=0;
+        if(temp==null){
+            System.out.println("no elements");
+            return -1;
+        }
+        while(temp.next!=tail.next && temp.data!=element){
+            temp = temp.next;
+            index++;
+        }
+        if(temp.data != element && temp.next == tail.next){
+            System.out.println("not found");
+            return -1;
+        }
+
+        return index;
+    }
+    public void display(){
+        Node temp = header.next;
+        while(temp.next !=tail.next){
+            System.out.print(temp.data+"\t");
+            temp = temp.next;
+        }
+
+        System.out.print(temp.data);
+        System.out.println("");
+    }
+    public int noofelements(){
+
+        return header.data;
+    }
+}
+
+class CircularQueueUsingSll{
+    class Node{
+        int data;
+        Node next;
+    }
+    Node header,tail;
+    public void headerNode(){
+        header=new Node();
+        header.data = 0;
+        header.next = null;
+    }
+    public void tailNode(){
+        tail=new Node();
+        tail.data = 0;
+        tail.next = header.next;
+    }
+    public CircularQueueUsingSll(){
+        headerNode();
+        tailNode();
+    }
+    public void enqueue(int element){
+        Node temp = new Node();
+        temp.data = element;
+        if(header.data == 0){
+            temp.next = temp;
+            tail=temp;
+            header.next = temp;
+        }
+        else{
+            temp.next = header.next;
+            tail.next=temp;
+            tail = temp;
+        }
+        header.data++;
+
+    }
+    public int dequeue(){
+
+
+        if(header.data == 0){
+            System.out.println("Queue is empty");
+            return -1;
+        }
+
+        if(header.data == 1) {
+            int ele = header.next.data;
+            header.next = null;
+            tail.next=null;
+            header.data = 0;
+            return ele;
+        }
+        int ele = header.next.data;
+        header.next = header.next.next;
+        tail.next = header.next;
+        header.data--;
+       return ele;
+    }
+
+    public void display(){
+        Node temp = header.next;
+        //System.out.println(temp.next.data);
+        while(temp.next!=tail.next){
+            System.out.print(temp.data +"\t");
+            temp = temp.next;
+        }
+        System.out.println(temp.data);
+    }
+
+}
+public class Main {
+
+    public static void main(String[] args) {
+	// write your code here
+        Scanner sc =new Scanner(System.in);
+
+        int cmd=0;
+        CircularQueueUsingSll linklist = new CircularQueueUsingSll();
+        while(cmd!=4){
+            System.out.println("1.Enqueue");
+            System.out.println("2.Dequeue");
+
+            System.out.println("3.Display");
+
+
+
+            System.out.println("4.Exit");
+            cmd = sc.nextInt();
+            if(cmd==1){
+                int element = sc.nextInt();
+
+                linklist.enqueue(element);
+            }
+            else if(cmd==2){
+                int element =  linklist.dequeue();
+                System.out.println(element+" deleted successfully");
+            }
+            else if(cmd==3){
+                linklist.display();
+            }
+
+            else {
+                System.out.println("exited sucessfully");
+            }
+
+        }
+    }
+}

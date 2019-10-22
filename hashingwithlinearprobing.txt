@@ -1,0 +1,86 @@
+// hashing with linear probing
+
+class Record{
+    int key;
+    String val;
+    Record(int key,String val){
+        this.key = key;
+        this.val = val;
+    }
+    Record(){
+        this.key=0;
+        this.val="";
+    }
+    public int search(int key,Record[] hashTable){
+        int hash = key%17;
+        int start=hash-1;
+        if(hashTable[hash].key == key){
+            return hash;
+        }
+        while(hashTable[hash].key != key && hashTable[hash].key!=0 && hash!=start){
+            hash = (hash+1)%17;
+        }
+        if(hashTable[hash].key==0){
+            System.out.println("record is deleted");
+            return -1;
+        }
+        if(hash==start && hashTable[start].key!=key){
+            System.out.println("record not found");
+            return -1;
+        }
+
+        return hash;
+
+
+    }
+
+    public void delete(int key,Record[] hashTable){
+        int hash = search(key,hashTable);
+        hashTable[hash].key = -999;
+        hashTable[hash].val = "";
+    }
+}
+public class Main {
+
+
+    public static void main(String[] args) {
+	// write your code here
+        Scanner sc = new Scanner(System.in);
+
+        Record[] arr = {new Record(100,"abc"),new Record(94,"def"),new Record(77,"sdkhf"),new Record(56,"sdfs"),new Record(57,"sdfs"),new Record(73,"sfdge"),new Record(101,"ert"),new Record(111,"yuyt")};
+
+        Record[] hashTable = new Record[20];
+
+        int i;
+        for(i=0;i<arr.length;i++){
+            int mod = (arr[i].key)%17;
+            int start = mod-1;
+
+            while(hashTable[mod]!=null && hashTable[mod].key!=0 && mod!=start){
+                mod = (mod+1)%17;
+            }
+            if(mod==start && hashTable[mod]!=null && hashTable[start].key!=0){
+                System.out.println("no space");
+                break;
+            }
+            hashTable[mod] = arr[i];
+        }
+        int cmd=0;
+        while(cmd!=2){
+            System.out.println("1.Search");
+            System.out.println("2.delete");
+            System.out.println("2.exit");
+            cmd = sc.nextInt();
+            if(cmd==1){
+                int key = sc.nextInt();
+                int index = new Record().search(key,hashTable);
+                System.out.println("found at index "+index );
+            }
+            if(cmd==2){
+                int key = sc.nextInt();
+                new Record().delete(key,hashTable);
+            }
+        }
+    }
+}
+

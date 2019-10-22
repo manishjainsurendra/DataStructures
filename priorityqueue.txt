@@ -1,0 +1,150 @@
+//Priority Queue
+
+package com.company;
+import java.util.*;
+class Item {
+    int number;
+    int priority;
+    Item(int n,int p) {
+        number = n;
+        priority = p;
+    }
+}
+class MyQueue {
+    Item[] item;
+    int front,rear,index=0,i;
+    public MyQueue(int capacity){
+        this.item = new Item[capacity];
+        this.front = -1;
+        this.rear = -1;
+    }
+
+    public void enqueue (int number,int priority){
+        if((this.rear+1)%this.item.length == this.front){
+            System.out.println("overflow");
+            return;
+        }
+        if(this.front==-1 && this.rear ==-1){
+            this.front++;
+            this.rear++;
+            this.item[this.rear] = new Item(number,priority);
+
+        }
+
+        else {
+            this.rear = (this.rear+1) % this.item.length;
+            System.out.println(this.rear);
+            if (this.rear > this.front) {
+                for (i = this.rear - 1; i >= this.front; i--) {
+                    int index;
+                    System.out.println(this.item[i].priority);
+                    if (this.item[i].priority < priority) {
+                        this.item[i + 1] = this.item[i];
+                        continue;
+                    } else if (this.item[i].priority >= priority) {
+                        index = i + 1;
+                        break;
+                    }
+
+                }
+                this.item[index] = new Item(number, priority);
+
+            } else if (this.rear < this.front) {
+                for (i = this.rear - 1; i >= 0; i--) {
+                    int index;
+                    if (this.item[i].priority < priority) {
+                        this.item[i + 1] = this.item[i];
+                        continue;
+                    } else if (this.item[i].priority >= priority) {
+                        index = i + 1;
+                        break;
+                    }
+
+                }
+                if (i == -1) {
+                    this.item[0] = this.item[this.item.length - 1];
+                    for (int i = this.item.length - 2; i >= this.front; i--) {
+                        int index;
+                        if (this.item[i].priority < priority) {
+                            this.item[i + 1] = this.item[i];
+                            continue;
+                        } else if (this.item[i].priority >= priority) {
+                            index = i + 1;
+                            break;
+                        }
+
+                    }
+                }
+                this.item[index] = new Item(number, priority);
+            }
+        }
+    }
+    //delete element from stack
+    public Item dequeue (){
+        if(this.front==-1){
+            System.out.println("underflow");
+            return null;
+        }
+        if(this.front == this.rear){
+            Item items = this.item[this.front];
+            this.front=this.rear=-1;
+            return items;
+        }
+        Item items = this.item[this.front];
+        this.front= (this.front+1)%this.item.length;
+        return items;
+    }
+    //print Queue elements
+//    public void print(){
+//
+//
+//        if(this.rear < this.front){
+//            for(int i=this.front;i<this.arr.length;i++) {
+//                System.out.print(arr[i]+"\t");
+//            }
+//            for(int i=this.rear;i<this.front;i++) {
+//                System.out.print(arr[i]+"\t");
+//            }
+//            return;
+//        }
+//        for(int i=this.front;i<=this.rear;i++) {
+//            System.out.print(arr[i]+"\t");
+//        }
+//    }
+
+
+}
+public class Main {
+
+    public static void main(String[] args) {
+	// write your code here
+        Scanner sc =new Scanner(System.in);
+        System.out.print("enter capacity of queue:");
+        int capacity = sc.nextInt();
+        int cmd=0;
+        MyQueue queue1 = new MyQueue(capacity);
+        while(cmd!=4){
+            System.out.println("1.Insert");
+            System.out.println("2.Delete");
+            System.out.println("3.Display");
+            System.out.println("4.Exit");
+            cmd = sc.nextInt();
+            if(cmd==1){
+                int element = sc.nextInt();
+                int priority = sc.nextInt();
+                queue1.enqueue(element,priority);
+            }
+            else if(cmd==2){
+                Item element = queue1.dequeue();
+                System.out.println(element.priority);
+            }
+//            else if(cmd==3){
+//                queue1.print();
+//            }
+            else {
+                System.out.println("exited sucessfully");
+            }
+
+        }
+    }
+}

@@ -1,0 +1,46 @@
+// infix to postfix
+Q (inout infix expression)
+P(postifix)
+    function Polish(Q,P){
+   1.add "left" paranthesis onto stack      prefix - "right"
+    add right  paranthesis at end of "Q"    prefix - "left" at begin of "Q"  
+  2. for each of Q
+     left to right             prefix  - right to left
+     repeat steps 3 to 6 until stack is empty
+  3. if "("  => push it onto stack       prefix - if ")" => push it onto stack
+  4.if an operand => add it to Postfix "P" prefix - same 
+  5.if an operator  => 
+    i. repeatedly pop from stack, all the operators that have same or higher precedence than current operator or "("     prefix - and pop only higher precedence than current    
+    ii. add the current operator to the stack           
+    iii. place all the popped operators to the postfix "P"
+
+  6. if a ")" =>         prefix - if a "(" 
+    i. repeatedly pop from stack all the operators until a "("          prefix -  until a ")"
+    ii. remove the "("         prefix - remove the ")"
+    iii. add all the popped to "P"   
+ 
+ 
+  7.exit      prefix - reverse the prefix expresion and exit  
+
+}
+
+
+// evaluate postfix 
+P - postfix 
+
+
+1.add ")" at the end of "P"   prefix - add "(" 
+2. scan "P" from "left to right" and repeat steps 3 and 4 for each element of "P" until ")" is encountered          prefix - "right to left"     until "(" is encountered
+3.if an operand =>
+  push it onto stack        
+
+4. if an operator is encountered
+  i. pop top two elements 
+     A- top element B- second top element
+     
+  ii.Perform "B operator A" and push to stack               prefix -"A operator B"    
+
+5. set result = top most value on the stack    
+6. exit 
+
+

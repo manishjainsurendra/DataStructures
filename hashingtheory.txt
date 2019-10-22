@@ -1,0 +1,40 @@
+// hashing 
+hash size 100(00-99)
+input 3205,7148,2345
+1. modulus method
+
+2. midsquare method 
+
+ k                k^2
+3205            10272025
+7148            51093904
+2345            5499025
+  
+
+  select any two bits consecutive from k^2(same for all)
+suppose we take 4th and 5th from right(starts from 1)
+for 10272025 -  4th - 2 5th - 7 hash - 72
+ k                k^2           hash 
+3205            10272025         72
+7148            51093904         93
+2345            5499025          99
+
+
+ 3. folding method - (Chopping/Hashing)
+
+H(3205) = 32 + 05 = 37 (selecting two digtits at a time since hash range is 00 to 99)
+
+H(7148) = 71 + 48 = 119 (ignore carry)  = 19
+
+H(2345) = 23 + 45 = 68
+
+H(0108) = 01 + 08 = 09
+H(32051) = 32 +05 +1 = 38
+
+
+
+collision resolution
+OPen addressing
+1.linear probing
+2.quadratic probing
+3.Double Hashing

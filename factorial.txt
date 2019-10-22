@@ -1,0 +1,15 @@
+
+int n = sc.nextInt();
+        int start = sc.nextInt();
+        int start1=start;
+        int i,temp=1;
+        //int[] factors = new int[n+1];
+        while(start>1){
+            temp *=start;
+            start--;
+        }
+        System.out.println(temp);
+        for(i=start1+1;i<=n;i++){
+            temp *= i;
+            System.out.println(temp);
+        }

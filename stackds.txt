@@ -1,0 +1,86 @@
+// stack implementation
+
+package com.company;
+import java.util.*;
+class MyStack {
+    int[] arr ;
+    int top;
+    // constructor
+    public MyStack(int capacity){
+        this.arr = new int[capacity];
+        this.top = -1;
+    }
+    // push into stack
+    public void push (int item){
+        if(this.top == this.arr.length-1){
+            System.out.println("overflow");
+        }
+        this.top++;
+        this.arr[top] = item;
+    }
+    //delete element from stack
+    public int pop (){
+        if(this.top==-1){
+            System.out.println("underflow");
+        }
+        int item = this.arr[top];
+        this.top--;
+        return item;
+    }
+    // return top element
+    public int peek(){
+        if(this.top ==-1){
+            System.out.println("stack is empty");
+            return -1;
+        }
+        else
+        return this.arr[top];
+    }
+    // print stack elements
+    public void print(){
+            System.out.println(Arrays.toString(this.arr));
+    }
+}
+public class Main {
+
+    public static void main(String[] args) {
+	// write your code here
+        Scanner sc =new Scanner(System.in);
+        System.out.print("enter capacity:");
+        int capacity = sc.nextInt();
+
+        MyStack stack1 = new MyStack(capacity);
+        int cmd=0;
+        while(cmd!=5){
+
+            System.out.println("Select Operation");
+            System.out.println("1.Push");
+            System.out.println("2.Pop");
+            System.out.println("3.peek");
+            System.out.println("4.print");
+            System.out.println("5.Exit");
+           cmd = sc.nextInt();
+
+           if(cmd==1){
+               int element = sc.nextInt();
+               stack1.push(element);
+           }
+           else if(cmd==2){
+               int element = stack1.pop();
+               System.out.println("popped: " + element );
+           }
+           else if(cmd==3){
+               System.out.println("top element: " + stack1.peek());
+           }
+           else if(cmd==4){
+               stack1.print();
+           }
+           else {
+               System.out.println("Exited successfully");
+           }
+
+        }
+//
+
+    }
+}

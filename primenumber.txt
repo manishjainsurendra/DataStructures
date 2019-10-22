@@ -1,0 +1,20 @@
+
+Scanner sc =new Scanner(System.in);
+       int start = sc.nextInt();
+       int end = sc.nextInt();
+
+       int i,j;
+       for(i=start;i<=end;i++){
+           //System.out.println(Math.sqrt(i));
+           for(j=2;j<=Math.round(Math.sqrt(i));j++){
+
+               if(i%j == 0){
+                   //System.out.println("notprime");
+                   break;
+               }
+           }
+           if(j>Math.sqrt(i)){
+               System.out.println(i);
+           }
+
+       }

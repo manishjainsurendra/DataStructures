@@ -1,0 +1,289 @@
+// Singly Linked List
+
+package com.company;
+import java.util.*;
+
+class MyLinkedList {
+
+    class Node{
+        int data;
+        Node next;
+    };
+    Node head=null;
+    public void insertFirst(int element){
+        Node temp=new Node();
+        temp.data = element;
+        temp.next=head;
+        head = temp;
+    }
+    public void insert(int element){
+        Node temp = head;
+        if(temp==null){
+            insertFirst(element);
+            return;
+        }
+        while(temp.next!=null){
+            temp = temp.next;
+        }
+        Node q = new Node();
+        q.data = element;
+        q.next = null;
+        temp.next=q;
+    }
+    public void insertAfter(int a,int b){
+        Node temp = head;
+        if(temp==null){
+            System.out.println("not possible, empty ll");
+            return;
+        }
+        while(temp.next!=null && temp.data!=b){
+            temp = temp.next;
+        }
+        if(temp.next == null && temp.data !=b){
+            System.out.println("node not present");
+            return;
+        }
+        Node q = new Node();
+        q.next = temp.next;
+        q.data = a;
+        temp.next = q;
+
+    }
+    public void insertBefore(int a,int b){
+        Node temp = head;
+        if(temp==null){
+            System.out.println("not possible, empty ll");
+            return;
+        }
+        if(temp.data == b){
+            insertFirst(a);
+            return;
+        }
+        while(temp.next!=null && temp.next.data!=b){
+            temp = temp.next;
+        }
+        if(temp.next == null){
+            System.out.println("node not present");
+            return;
+        }
+        Node q = new Node();
+        q.next = temp.next;
+        q.data = a;
+        temp.next = q;
+
+    }
+    public void insertSorted(int element){
+        Node temp = head;
+        if(temp==null){
+            insertFirst(element);
+            return;
+        }
+        while(temp.next!=null && temp.data<element){
+            temp = temp.next;
+        }
+        if(temp.data <= element && temp.next == null){
+            insert(element);
+            return;
+        }
+        int ib = temp.data;
+        insertBefore(element,ib);
+        display();
+    }
+    public void deleteFirst(){
+        if(head == null){
+            System.out.println("no elements");
+            return;
+        }
+        head = head.next;
+        display();
+    }
+    public void deleteLast(){
+        Node temp = head;
+        if(temp==null){
+            System.out.println("no elements");
+            return;
+        }
+        while(temp.next.next!=null){
+            temp = temp.next;
+
+        }
+        temp.next = null;
+        display();
+    }
+    public void deleteElement(int element){
+        Node temp = head;
+        if(temp==null){
+            System.out.println("no elements");
+            return;
+        }
+        while(temp.next!=null && temp.next.data!=element){
+            temp = temp.next;
+        }
+        if(temp.next == null){
+            System.out.println("element not found");
+            return;
+        }
+        temp.next = temp.next.next;
+        display();
+
+    }
+    public int deleteAfter(int element){
+        int ele=-1;
+        Node temp = head;
+        if(temp==null){
+            System.out.println("no elements");
+            return -1;
+        }
+        while(temp.next!=null && temp.data!=element){
+            temp = temp.next;
+        }
+        if(temp.next == null && temp.data==element){
+            System.out.println("no elements to delete after given element");
+            return -1;
+        }
+         ele = temp.next.data;
+        temp.next = temp.next.next;
+
+        return ele;
+    }
+    public int deleteBefore(int element){
+        int ele=-1;
+        Node temp = head;
+        if(temp==null){
+            System.out.println("no elements");
+            return -1;
+        }
+        while(temp.next!=null && temp.next.next!=null && temp.next.data!=element &&  temp.next.next.data!=element){
+            temp = temp.next;
+        }
+        if(temp.next==null || temp.data == element){
+            System.out.println("no elements to delete");
+            return -1;
+        }
+        if(temp.next.next == null || temp.next.data == element) {
+            ele = temp.data;
+
+            head = head.next;
+            return ele;
+        }
+        temp = temp.next;
+        ele = temp.data;
+        temp.next = temp.next.next;
+
+        return ele;
+    }
+    public int searchElement(int element){
+        Node temp = head;
+        int index=0;
+        if(temp==null){
+            System.out.println("no elements");
+            return -1;
+        }
+        while(temp.next!=null && temp.data!=element){
+            temp = temp.next;
+            index++;
+        }
+        if(temp.data != element && temp.next == null){
+            System.out.println("not found");
+            return -1;
+        }
+
+        return index;
+    }
+    public void display(){
+        Node temp = head;
+        while(temp.next !=null){
+            System.out.print(temp.data+"\t");
+            temp = temp.next;
+        }
+
+        System.out.print(temp.data);
+        System.out.println("");
+    }
+}
+public class Main {
+
+    public static void main(String[] args) {
+	// write your code here
+        Scanner sc =new Scanner(System.in);
+
+        int cmd=0;
+        MyLinkedList linklist = new MyLinkedList();
+        while(cmd!=13){
+            System.out.println("1.Insert");
+            System.out.println("2.InsertFirst");
+
+            System.out.println("3.Display");
+            System.out.println("4.Insert After");
+            System.out.println("5.Insert Before");
+            System.out.println("6.Delete First");
+            System.out.println("7.Delete Last");
+            System.out.println("8.Delete Element");
+            System.out.println("9.Delete Before");
+            System.out.println("10.Delete After");
+            System.out.println("11.Search element");
+            System.out.println("12.insert sorted");
+
+            System.out.println("13.Exit");
+            cmd = sc.nextInt();
+            if(cmd==1){
+                int element = sc.nextInt();
+
+                linklist.insert(element);
+            }
+            else if(cmd==2){
+                int element =  sc.nextInt();
+                linklist.insertFirst(element);
+            }
+            else if(cmd==3){
+                linklist.display();
+            }
+            else if(cmd==4){
+                int element1 =  sc.nextInt();
+                int element2 =  sc.nextInt();
+                linklist.insertAfter(element1,element2);
+            }
+            else if(cmd==5){
+                int element1 =  sc.nextInt();
+                int element2 =  sc.nextInt();
+                linklist.insertBefore(element1,element2);
+            }
+            else if(cmd==6){
+                linklist.deleteFirst();
+            }
+            else if(cmd==7){
+                linklist.deleteLast();
+            }
+            else if(cmd==8){
+                int element = sc.nextInt();
+                linklist.deleteElement(element);
+            }
+            else if(cmd==9){
+                int element = sc.nextInt();
+                int ele = linklist.deleteBefore(element);
+                System.out.println(ele+"deleted successfully");
+                linklist.display();
+            }
+            else if(cmd==10){
+                int element = sc.nextInt();
+                int ele = linklist.deleteAfter(element);
+                System.out.println(ele+"deleted successfully");
+                linklist.display();
+            }
+            else if(cmd==11) {
+                int element = sc.nextInt();
+               int index =  linklist.searchElement(element);
+                System.out.println("found at" +index);
+            }
+            else if(cmd==12) {
+                int element = sc.nextInt();
+                linklist.insertSorted(element);
+            }
+            else {
+                System.out.println("exited sucessfully");
+            }
+
+        }
+    }
+}
+
